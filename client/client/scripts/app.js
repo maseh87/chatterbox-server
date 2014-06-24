@@ -27,7 +27,7 @@ function getUrlParameters(parameter, decode){
 }
 
 var app = {};
-app.server = 'http://127.0.0.1:3000';
+app.server = 'http://127.0.0.1:3000/classes/messages';
 app.roomnames = {};
 app.currentRoom = 'lobby';
 app.friends = {};
@@ -38,7 +38,7 @@ app.init = function(){
   if (!app.username) { app.username = 'Anonymous'; }
   function getMessages(){
     app.fetch(app.initMessages);
-    setTimeout(getMessages, 2000);
+    // setTimeout(getMessages, 2000);
   }
   ///setTimeout(function(){ app.fetch(app.initMessages); ), 3000);
   getMessages();

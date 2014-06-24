@@ -4,7 +4,7 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-var qs = require('querystring');
+// var qs = require('querystring');
 var obj = {};
 obj.results = [];
 
@@ -29,14 +29,35 @@ obj.results = [];
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-   request.on('data', function(msg) {
-    obj.results.push(msg);
-   });
+  var msg = '';
+  if(request.method === 'POST'){
+    var newStatusCode = 201;
+    response.writeHead(newStatusCode, headers);
+
+    if (request.url.match(/^\/classes\//)){
+      request.on('data', function(chunk) {
+        msg += chunk;
+        msg = JSON.parse(msg);
+      });
+      request.on('end', function() {
+        msg.createdAt = new Date();
+        obj.results.push(msg);
+      });
+    }
+  }
+  if (request.method === 'GET'){
+    if (!request.url.match(/^\/classes\//)){
+      var newStatusCode = 404;
+      response.writeHead(newStatusCode, headers);
+      response.end('');
+    }
+    else{
+      console.log(statusCode)
+      response.writeHead(statusCode, headers);
+      // response.end(JSON.stringify(obj));
+    }
+  }
   response.end(JSON.stringify(obj));
-  // request.on('end', function() {
-  //   post = JSON.parse(data);
-  //   console.log(post);
-  // });
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -51,4 +72,3 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 
-// var post = qs.parse(data);
