@@ -27,7 +27,7 @@ function getUrlParameters(parameter, decode){
 }
 
 var app = {};
-app.server = 'http://127.0.0.1:3000/classes/messages';
+app.server = '/classes/messages';
 app.roomnames = {};
 app.currentRoom = 'lobby';
 app.friends = {};
@@ -50,7 +50,7 @@ app.send = function(message){
     url: app.server,
     type: 'POST',
     data: JSON.stringify(message),
-    // contentType: 'application/json',
+    contentType: 'application/json',
     success: function (data) {
       console.log(data);
       app.fetch(app.initMessages);
@@ -67,6 +67,7 @@ app.fetch = function(func){
   $.ajax({
     url: app.server,// + '?order=-createdAt',
     type: 'GET',
+    contentType: 'application/json,',
     success: function(data){
       func(data);
     }
