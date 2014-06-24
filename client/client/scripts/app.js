@@ -38,7 +38,7 @@ app.init = function(){
   if (!app.username) { app.username = 'Anonymous'; }
   function getMessages(){
     app.fetch(app.initMessages);
-    // setTimeout(getMessages, 2000);
+    setTimeout(getMessages, 2000);
   }
   ///setTimeout(function(){ app.fetch(app.initMessages); ), 3000);
   getMessages();
@@ -53,6 +53,7 @@ app.send = function(message){
     // contentType: 'application/json',
     success: function (data) {
       console.log(data);
+      app.fetch(app.initMessages);
     },
     error: function (data) {
       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -73,7 +74,7 @@ app.fetch = function(func){
 };
 
 app.initMessages = function(data){
-  // console.log(data);
+  console.log(data);
   // data['results'].reverse();
   var messages = [];
   _.each(data['results'], function(item){
